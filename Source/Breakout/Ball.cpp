@@ -32,7 +32,7 @@ void ABall::Tick( float DeltaTime )
 {
 	Super::Tick( DeltaTime );
 
-	SetVelocity(Velocity);
+	//SetVelocity(Velocity);
 	//FVector Pos = GetActorLocation();
 	//Pos = Pos + (Velocity * DeltaTime);
 	//SetActorLocation(Pos);
