@@ -4,6 +4,8 @@
 #include "PaperSpriteComponent.h"
 #include "Ball.h"
 
+// #include "DrawDebugHelpers.h"
+// DrawDebugLine(World, CurPos, CurPos + (MoveDirection * 100.0f), FColor::Red, false, 0.1f, 0, 2.0f);
 
 // Sets default values
 ABall::ABall()
@@ -24,7 +26,6 @@ ABall::ABall()
 void ABall::BeginPlay()
 {
 	Super::BeginPlay();
-	
 }
 
 // Called every frame
@@ -32,9 +33,24 @@ void ABall::Tick( float DeltaTime )
 {
 	Super::Tick( DeltaTime );
 
-	//SetVelocity(Velocity);
-	//FVector Pos = GetActorLocation();
-	//Pos = Pos + (Velocity * DeltaTime);
-	//SetActorLocation(Pos);
+	FVector CurPos = GetActorLocation();
+	FVector DesiredPos = CurPos + ((MoveDirection * MoveSpeed) * DeltaTime);
+
+	if (UWorld* World = GetWorld())
+	{
+		FHitResult OutHit;
+		FCollisionShape CollisionShape;
+		CollisionShape.SetCapsule(CollisionRadius, 128.0f);
+
+		if (World->SweepSingleByProfile(OutHit, CurPos, DesiredPos, FQuat::MakeFromEuler(FVector(-90.0f, 0.0f, 0.0f)), MovementCollisionProfile, CollisionShape))
+		{
+			SetActorLocation(CurPos);
+			MoveDirection = -MoveDirection; // Simple temporary bounce..
+		}
+		else
+		{
+			SetActorLocation(DesiredPos);
+		}
+	}
 }
 
