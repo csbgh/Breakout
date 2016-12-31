@@ -23,6 +23,7 @@ ABall::ABall()
 	}
 
 	Movement = CreateDefaultSubobject<UBallMovementComponent>(TEXT("Movement"));
+	Movement->OnProjectileBounce.AddDynamic(this, &ABall::OnProjectileBounce);
 
 	// Add event for when actor overlaps triggers
 	BallSprite->OnComponentBeginOverlap.AddDynamic(this, &ABall::OnOverlap);
@@ -40,10 +41,14 @@ void ABall::Tick( float DeltaTime )
 	Super::Tick( DeltaTime );
 }
 
-// Method itself (Note the parameters)
 void ABall::OnOverlap(class UPrimitiveComponent* HitComp, class AActor* OtherActor, class UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult & SweepResult)
 {
 	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, FString::Printf(TEXT("Ball Reset!")));
 	SetActorLocation(FVector(0, 0, 0));
+}
+
+void ABall::OnProjectileBounce(const FHitResult& ImpactResult, const FVector& ImpactVelocity)
+{
+	OnBallBounce(FVector(0, 0, 0), FVector(0, 0, 0));
 }
 

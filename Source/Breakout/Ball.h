@@ -20,12 +20,14 @@ public:
 	// Called every frame
 	virtual void Tick( float DeltaSeconds ) override;
 
-	// What physics objects the ball will hit
-	//UPROPERTY(EditAnywhere, BlueprintReadWRite, Category = "Movement")
-	//FName MovementCollisionProfile;
+	UFUNCTION(BlueprintImplementableEvent, Category = "Ball")
+	void OnBallBounce(const FVector& Position, const FVector& SurfaceNormal);
 
 	UFUNCTION()
 	void OnOverlap(class UPrimitiveComponent* HitComp, class AActor* OtherActor, class UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult & SweepResult);
+
+	UFUNCTION()
+	void OnProjectileBounce(const FHitResult& ImpactResult, const FVector& ImpactVelocity);
 
 private:
 
