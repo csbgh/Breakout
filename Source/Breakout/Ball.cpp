@@ -2,10 +2,8 @@
 
 #include "Breakout.h"
 #include "PaperSpriteComponent.h"
+#include "BallMovementComponent.h"
 #include "Ball.h"
-
-// #include "DrawDebugHelpers.h"
-// DrawDebugLine(World, CurPos, CurPos + (MoveDirection * 100.0f), FColor::Red, false, 0.1f, 0, 2.0f);
 
 // Sets default values
 ABall::ABall()
@@ -20,6 +18,13 @@ ABall::ABall()
 
 	BallSprite = CreateDefaultSubobject<UPaperSpriteComponent>(TEXT("BallSprite"));
 	BallSprite->AttachTo(RootComponent);
+	BallSprite->SetSimulatePhysics(true);
+	BallSprite->SetEnableGravity(false);
+	BallSprite->BodyInstance.bLockRotation = true;
+	BallSprite->SetCollisionProfileName(FName("Ball"));
+
+	Movement = CreateDefaultSubobject<UBallMovementComponent>(TEXT("Movement"));
+	Movement->SetUpdatedComponent(BallSprite);
 }
 
 // Called when the game starts or when spawned
@@ -32,25 +37,5 @@ void ABall::BeginPlay()
 void ABall::Tick( float DeltaTime )
 {
 	Super::Tick( DeltaTime );
-
-	FVector CurPos = GetActorLocation();
-	FVector DesiredPos = CurPos + ((MoveDirection * MoveSpeed) * DeltaTime);
-
-	if (UWorld* World = GetWorld())
-	{
-		FHitResult OutHit;
-		FCollisionShape CollisionShape;
-		CollisionShape.SetCapsule(CollisionRadius, 128.0f);
-
-		if (World->SweepSingleByProfile(OutHit, CurPos, DesiredPos, FQuat::MakeFromEuler(FVector(-90.0f, 0.0f, 0.0f)), MovementCollisionProfile, CollisionShape))
-		{
-			SetActorLocation(CurPos);
-			MoveDirection = -MoveDirection; // Simple temporary bounce..
-		}
-		else
-		{
-			SetActorLocation(DesiredPos);
-		}
-	}
 }
 

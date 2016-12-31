@@ -20,14 +20,6 @@ public:
 	// Called every frame
 	virtual void Tick( float DeltaSeconds ) override;
 
-	// normalized movement direction of the ball
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement")
-	FVector MoveDirection;
-
-	// speed at which the ball moves in the movement direction
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement")
-	float MoveSpeed;
-
 	// What physics objects the ball will hit
 	UPROPERTY(EditAnywhere, BlueprintReadWRite, Category = "Movement")
 	FName MovementCollisionProfile;
@@ -36,8 +28,8 @@ private:
 
 	UPROPERTY(VisibleAnywhere, BluePrintReadOnly, Category = "Ball", meta = (AllowPrivateAccess = "true"))
 	class UPaperSpriteComponent* BallSprite;
-	
-	UPROPERTY(EditAnywhere, BluePrintReadOnly, Category = "Ball", meta = (AllowPrivateAccess = "true"))
-	float CollisionRadius;
+
+	UPROPERTY(VisibleAnywhere, BluePrintReadOnly, Category = "Ball", meta = (AllowPrivateAccess = "true"))
+	class UBallMovementComponent* Movement;
 
 };
