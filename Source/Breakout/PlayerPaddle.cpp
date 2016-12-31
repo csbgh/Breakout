@@ -43,7 +43,6 @@ void APlayerPaddle::Tick( float DeltaTime )
 	Super::Tick( DeltaTime );
 
 	PaddleInput.Sanitize();
-	UE_LOG(LogTemp, Warning, TEXT("Movement : %f"), PaddleInput.MovementX);
 
 	// Move Paddle
 	{

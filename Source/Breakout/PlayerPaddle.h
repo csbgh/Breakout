@@ -49,9 +49,6 @@ private:
 	UPROPERTY(VisibleAnywhere, BluePrintReadOnly, Category = "Paddle", meta = (AllowPrivateAccess = "true"))
 	class UPaperSpriteComponent* PaddleSprite;
 
-	//UPROPERTY(VisibleAnywhere, BluePrintReadOnly, Category = "Paddle", meta = (AllowPrivateAccess = "true"))
-	//class UCameraComponent* Camera;
-
 protected:
 
 	UPROPERTY(VisibleAnywhere, BluePrintReadOnly, Category = "Paddle")
