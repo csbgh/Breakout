@@ -33,3 +33,8 @@ void ABrick::Tick( float DeltaTime )
 
 }
 
+void ABrick::NotifyHit(class UPrimitiveComponent* MyComp, AActor* Other, class UPrimitiveComponent* OtherComp, bool bSelfMoved, FVector HitLocation, FVector HitNormal, FVector NormalImpulse, const FHitResult& Hit)
+{
+	Destroy();
+}
+

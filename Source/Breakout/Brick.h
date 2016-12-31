@@ -20,6 +20,10 @@ public:
 	// Called every frame
 	virtual void Tick( float DeltaSeconds ) override;
 
+protected:
+
+	virtual void NotifyHit(class UPrimitiveComponent* MyComp, AActor* Other, class UPrimitiveComponent* OtherComp, bool bSelfMoved, FVector HitLocation, FVector HitNormal, FVector NormalImpulse, const FHitResult& Hit);
+
 private:
 
 	UPROPERTY(VisibleAnywhere, BluePrintReadOnly, Category = "Brick", meta = (AllowPrivateAccess = "true"))
@@ -28,15 +32,3 @@ private:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Brick", meta = (AllowPrivateAccess = "true"))
 	int32 MaxHealth;
 };
-
-/*UENUM(BlueprintType)		//"BlueprintType" is essential to include
-enum class EBrickType : uint8
-{
-Blue 	UMETA(DisplayName = "Red"),
-Green	UMETA(DisplayName = "Blue"),
-Red		UMETA(DisplayName = "Song"),
-Purple	UMETA(DisplayName = "Purple"),
-Yellow	UMETA(DisplayName = "Yellow"),
-Black	UMETA(DisplayName = "Black"),
-White	UMETA(DisplayName = "White")
-};*/
