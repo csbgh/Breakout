@@ -23,13 +23,8 @@ APlayerPaddle::APlayerPaddle()
 
 	MoveSpeed = 100.0f;
 
-	if (RootComponent == nullptr)
-	{
-		RootComponent = CreateDefaultSubobject<USceneComponent>(TEXT("PaddleBase"));
-	}
-
 	PaddleSprite = CreateDefaultSubobject<UPaperSpriteComponent>(TEXT("PaddleSprite"));
-	PaddleSprite->AttachTo(RootComponent);
+	RootComponent = PaddleSprite;
 }
 
 // Called when the game starts or when spawned
@@ -71,7 +66,7 @@ void APlayerPaddle::Tick( float DeltaTime )
 }
 
 // Called to bind functionality to input
-void APlayerPaddle::SetupPlayerInputComponent(class UInputComponent* InputComponent)
+void APlayerPaddle::SetupPlayerInputComponent(UInputComponent* InputComponent)
 {
 	Super::SetupPlayerInputComponent(InputComponent);
 

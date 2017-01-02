@@ -3,6 +3,7 @@
 #include "Breakout.h"
 #include "PaperSpriteComponent.h"
 #include "BallMovementComponent.h"
+#include "BreakoutGameState.h"
 #include "Ball.h"
 
 // Sets default values
@@ -33,6 +34,7 @@ ABall::ABall()
 void ABall::BeginPlay()
 {
 	Super::BeginPlay();
+	ResetBall(0.1f);
 }
 
 // Called every frame
@@ -43,12 +45,39 @@ void ABall::Tick( float DeltaTime )
 
 void ABall::OnOverlap(class UPrimitiveComponent* HitComp, class AActor* OtherActor, class UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult & SweepResult)
 {
-	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, FString::Printf(TEXT("Ball Reset!")));
-	SetActorLocation(FVector(0, 0, 0));
+	if (UWorld* CurWorld = GetWorld())
+	{
+		AGameStateBase* GameState = CurWorld->GetGameState();
+		if (GameState != nullptr)
+		{
+			ABreakoutGameState* BreakoutGameState = (ABreakoutGameState*)GameState;
+			BreakoutGameState->CurrentLives -= 1;
+		}
+	}
+	ResetBall(1.5f);
 }
 
 void ABall::OnProjectileBounce(const FHitResult& ImpactResult, const FVector& ImpactVelocity)
 {
 	OnBallBounce(FVector(0, 0, 0), FVector(0, 0, 0));
+}
+
+void ABall::OnBallRelease()
+{
+	Movement->Velocity = FVector(1.0f, 0.0f, 1.0f) * Movement->InitialSpeed;
+	DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
+}
+
+void ABall::ResetBall(float ReleaseDelayTime)
+{
+	Movement->Velocity = FVector(0, 0, 0);
+	if (UWorld* World = GetWorld())
+	{
+		APlayerController* Player = World->GetFirstPlayerController();
+		AttachToActor(Player->GetPawn(), FAttachmentTransformRules::SnapToTargetIncludingScale, FName("BallSpawn"));
+
+		FTimerHandle ReleaseTimer;
+		GetWorldTimerManager().SetTimer(ReleaseTimer, this, &ABall::OnBallRelease, ReleaseDelayTime, false);
+	}
 }
 

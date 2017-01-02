@@ -3,7 +3,7 @@
 #include "Breakout.h"
 #include "PaperSpriteComponent.h"
 #include "Brick.h"
-#include "BreakoutGameMode.h"
+#include "BreakoutGameState.h"
 
 // Sets default values
 ABrick::ABrick()
@@ -38,11 +38,11 @@ void ABrick::NotifyHit(class UPrimitiveComponent* MyComp, AActor* Other, class U
 {
 	if (UWorld* CurWorld = GetWorld())
 	{
-		AGameModeBase* GameMode = CurWorld->GetAuthGameMode();
-		if (GameMode != nullptr)
+		AGameStateBase* GameState = CurWorld->GetGameState();
+		if (GameState != nullptr)
 		{
-			ABreakoutGameMode* BreakoutGameMode = (ABreakoutGameMode*)GameMode;
-			BreakoutGameMode->CurrentScore += ScoreValue;
+			ABreakoutGameState* BreakoutGameState = (ABreakoutGameState*)GameState;
+			BreakoutGameState->CurrentScore += ScoreValue;
 		}
 	}
 

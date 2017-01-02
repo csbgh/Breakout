@@ -29,6 +29,9 @@ public:
 	UFUNCTION()
 	void OnProjectileBounce(const FHitResult& ImpactResult, const FVector& ImpactVelocity);
 
+	UFUNCTION()
+	void OnBallRelease();
+
 private:
 
 	UPROPERTY(VisibleAnywhere, BluePrintReadOnly, Category = "Ball", meta = (AllowPrivateAccess = "true"))
@@ -36,5 +39,7 @@ private:
 
 	UPROPERTY(VisibleAnywhere, BluePrintReadOnly, Category = "Ball", meta = (AllowPrivateAccess = "true"))
 	class UBallMovementComponent* Movement;
+
+	void ResetBall(float ReleaseDelayTime);
 
 };
