@@ -3,6 +3,7 @@
 #include "Breakout.h"
 #include "PaperSpriteComponent.h"
 #include "Brick.h"
+#include "BreakoutGameMode.h"
 
 // Sets default values
 ABrick::ABrick()
@@ -35,6 +36,19 @@ void ABrick::Tick( float DeltaTime )
 
 void ABrick::NotifyHit(class UPrimitiveComponent* MyComp, AActor* Other, class UPrimitiveComponent* OtherComp, bool bSelfMoved, FVector HitLocation, FVector HitNormal, FVector NormalImpulse, const FHitResult& Hit)
 {
+	if (UWorld* CurWorld = GetWorld())
+	{
+		AGameModeBase* GameMode = CurWorld->GetAuthGameMode();
+		if (GameMode != nullptr)
+		{
+			ABreakoutGameMode* BreakoutGameMode = (ABreakoutGameMode*)GameMode;
+			BreakoutGameMode->CurrentScore += ScoreValue;
+		}
+	}
+
+	OnBrickHit();
+	OnBrickDestroyed();
+
 	Destroy();
 }
 

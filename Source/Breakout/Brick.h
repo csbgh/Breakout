@@ -20,6 +20,12 @@ public:
 	// Called every frame
 	virtual void Tick( float DeltaSeconds ) override;
 
+	UFUNCTION(BlueprintImplementableEvent, Category = "Brick")
+	void OnBrickDestroyed();
+
+	UFUNCTION(BlueprintImplementableEvent, Category = "Brick")
+	void OnBrickHit();
+
 protected:
 
 	virtual void NotifyHit(class UPrimitiveComponent* MyComp, AActor* Other, class UPrimitiveComponent* OtherComp, bool bSelfMoved, FVector HitLocation, FVector HitNormal, FVector NormalImpulse, const FHitResult& Hit);
@@ -31,4 +37,7 @@ private:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Brick", meta = (AllowPrivateAccess = "true"))
 	int32 MaxHealth;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Brick", meta = (AllowPrivateAccess = "true"))
+	int32 ScoreValue;
 };

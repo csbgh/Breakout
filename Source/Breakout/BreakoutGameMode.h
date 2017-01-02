@@ -13,7 +13,11 @@ class BREAKOUT_API ABreakoutGameMode : public AGameModeBase
 {
 	GENERATED_BODY()
 	
+public:
+
+	UPROPERTY(VisibleAnywhere, BluePrintReadOnly, Category = "Paddle")
+	int32 CurrentScore;
 	
-	
-	
+	UPROPERTY(EditAnywhere, BluePrintReadWrite, Category = "UI")
+	FVector2D ConstrainAspectRatioOffset;
 };
