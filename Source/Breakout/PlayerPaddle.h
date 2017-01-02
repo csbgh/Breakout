@@ -44,10 +44,17 @@ private:
 
 	void Move(float AxisValue);
 
-private:
-	
 	UPROPERTY(VisibleAnywhere, BluePrintReadOnly, Category = "Paddle", meta = (AllowPrivateAccess = "true"))
 	class UPaperSpriteComponent* PaddleSprite;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Paddle", meta = (AllowPrivateAccess = "true"))
+	float MoveSpeed;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Collision", meta = (AllowPrivateAccess = "true"))
+	FVector CollisionBoxHalfExtents;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Collision", meta = (AllowPrivateAccess = "true"))
+	FName CollisionProfile;
 
 protected:
 

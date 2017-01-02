@@ -21,6 +21,8 @@ APlayerPaddle::APlayerPaddle()
  	// Set this pawn to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
+	MoveSpeed = 100.0f;
+
 	if (RootComponent == nullptr)
 	{
 		RootComponent = CreateDefaultSubobject<USceneComponent>(TEXT("PaddleBase"));
@@ -46,9 +48,25 @@ void APlayerPaddle::Tick( float DeltaTime )
 
 	// Move Paddle
 	{
-		FVector MovementDirection = FVector(PaddleInput.MovementX * 100.0f, 0.0f, 0.0f) * DeltaTime;
-		FVector Pos = GetActorLocation();
-		SetActorLocation(Pos + MovementDirection);
+		FVector CurPos = GetActorLocation();
+		FVector MovementDirection = FVector(PaddleInput.MovementX * MoveSpeed, 0.0f, 0.0f) * DeltaTime;
+		FVector DesiredPos = CurPos + MovementDirection;
+
+		if (UWorld* World = GetWorld())
+		{
+			FHitResult OutHit;
+			FCollisionShape CollisionShape;
+			CollisionShape.SetBox(CollisionBoxHalfExtents);
+
+			if (World->SweepSingleByProfile(OutHit, CurPos, DesiredPos, FQuat::MakeFromEuler(FVector(-90.0f, 0.0f, 0.0f)), CollisionProfile, CollisionShape))
+			{
+				SetActorLocation(OutHit.Location + (OutHit.Normal * 0.1f));
+			}
+			else
+			{
+				SetActorLocation(DesiredPos);
+			}
+		}
 	}
 }
 
