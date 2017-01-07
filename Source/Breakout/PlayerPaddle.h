@@ -5,23 +5,6 @@
 #include "GameFramework/Pawn.h"
 #include "PlayerPaddle.generated.h"
 
-USTRUCT()
-struct FPaddleInput
-{
-	GENERATED_BODY()
-
-public:
-
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Paddle", meta = (AllowPrivateAccess = "true"))
-	float MovementX;
-
-	void Sanitize();
-	void Move(float AxisValue);
-
-private:
-	float RawMovementInput;
-};
-
 UCLASS()
 class BREAKOUT_API APlayerPaddle : public APawn
 {
@@ -55,10 +38,5 @@ private:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Collision", meta = (AllowPrivateAccess = "true"))
 	FName CollisionProfile;
-
-protected:
-
-	UPROPERTY(VisibleAnywhere, BluePrintReadOnly, Category = "Paddle")
-	FPaddleInput PaddleInput;
 
 };

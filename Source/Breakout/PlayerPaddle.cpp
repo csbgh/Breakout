@@ -4,24 +4,13 @@
 #include "PaperSpriteComponent.h"
 #include "PlayerPaddle.h"
 
-void FPaddleInput::Sanitize()
-{
-	MovementX = FMath::Clamp(RawMovementInput, -1.0f, 1.0f);
-	RawMovementInput = 0.0f;
-}
-
-void FPaddleInput::Move(float AxisValue)
-{
-	RawMovementInput += AxisValue;
-}
-
 // Sets default values
 APlayerPaddle::APlayerPaddle()
 {
  	// Set this pawn to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
-	MoveSpeed = 100.0f;
+	MoveSpeed = 400.0f;
 
 	PaddleSprite = CreateDefaultSubobject<UPaperSpriteComponent>(TEXT("PaddleSprite"));
 	RootComponent = PaddleSprite;
@@ -31,7 +20,6 @@ APlayerPaddle::APlayerPaddle()
 void APlayerPaddle::BeginPlay()
 {
 	Super::BeginPlay();
-	
 }
 
 // Called every frame
@@ -39,27 +27,42 @@ void APlayerPaddle::Tick( float DeltaTime )
 {
 	Super::Tick( DeltaTime );
 
-	PaddleInput.Sanitize();
-
 	// Move Paddle
 	{
-		FVector CurPos = GetActorLocation();
-		FVector MovementDirection = FVector(PaddleInput.MovementX * MoveSpeed, 0.0f, 0.0f) * DeltaTime;
-		FVector DesiredPos = CurPos + MovementDirection;
+		bool MouseInWindow = true;
 
-		if (UWorld* World = GetWorld())
+		APlayerController* PlayerController = Cast<APlayerController>(GetController());
+		FVector WorldPosition, WorldDirection;
+		if (PlayerController != nullptr)
 		{
-			FHitResult OutHit;
-			FCollisionShape CollisionShape;
-			CollisionShape.SetBox(CollisionBoxHalfExtents);
+			float LocationX, LocationY;
+			PlayerController->GetMousePosition(LocationX, LocationY);
+			FVector2D MousePosition(LocationX, LocationY);
 
-			if (World->SweepSingleByProfile(OutHit, CurPos, DesiredPos, FQuat::MakeFromEuler(FVector(-90.0f, 0.0f, 0.0f)), CollisionProfile, CollisionShape))
+			MouseInWindow = MousePosition.X > 0.0f && MousePosition.Y > 0.0f;
+
+			PlayerController->DeprojectMousePositionToWorld(WorldPosition, WorldDirection);
+		}
+
+		if (MouseInWindow)
+		{
+			FVector CurPos = GetActorLocation();
+			FVector DesiredPos = CurPos + FVector(WorldPosition.X - CurPos.X, 0, 0);
+
+			if (UWorld* World = GetWorld())
 			{
-				SetActorLocation(OutHit.Location + (OutHit.Normal * 0.1f));
-			}
-			else
-			{
-				SetActorLocation(DesiredPos);
+				FHitResult OutHit;
+				FCollisionShape CollisionShape;
+				CollisionShape.SetBox(CollisionBoxHalfExtents);
+
+				if (World->SweepSingleByProfile(OutHit, CurPos, DesiredPos, FQuat::MakeFromEuler(FVector(-90.0f, 0.0f, 0.0f)), CollisionProfile, CollisionShape))
+				{
+					SetActorLocation(OutHit.Location + (OutHit.Normal * 0.1f));
+				}
+				else
+				{
+					SetActorLocation(DesiredPos);
+				}
 			}
 		}
 	}
@@ -69,11 +72,9 @@ void APlayerPaddle::Tick( float DeltaTime )
 void APlayerPaddle::SetupPlayerInputComponent(UInputComponent* InputComponent)
 {
 	Super::SetupPlayerInputComponent(InputComponent);
-
-	InputComponent->BindAxis(TEXT("PaddleMovement"), this, &APlayerPaddle::Move);
 }
 
 void APlayerPaddle::Move(float AxisValue)
 {
-	PaddleInput.Move(AxisValue);
+	
 }
