@@ -51,7 +51,7 @@ void ABall::OnOverlap(class UPrimitiveComponent* HitComp, class AActor* OtherAct
 		if (GameState != nullptr)
 		{
 			ABreakoutGameState* BreakoutGameState = (ABreakoutGameState*)GameState;
-			BreakoutGameState->CurrentLives -= 1;
+			BreakoutGameState->ModifyLives(-1);
 		}
 	}
 	ResetBall(1.5f);

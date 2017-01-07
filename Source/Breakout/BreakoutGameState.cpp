@@ -10,6 +10,15 @@ ABreakoutGameState::ABreakoutGameState()
 	CurrentLives = 3;
 }
 
+void ABreakoutGameState::ModifyLives(int Value)
+{
+	CurrentLives += Value;
+	if (CurrentLives <= 0)
+	{
+		RestartGame();
+	}
+}
+
 void ABreakoutGameState::InitGameState()
 {
 

@@ -20,18 +20,18 @@ public:
 	UPROPERTY(VisibleAnywhere, BluePrintReadOnly, Category = "Game State")
 	int32 CurrentScore;
 
-	UPROPERTY(VisibleAnywhere, BluePrintReadOnly, Category = "Game State")
-	int32 CurrentLives;
-
 	UPROPERTY(EditAnywhere, BluePrintReadWrite, Category = "UI")
 	FVector2D ConstrainAspectRatioOffset;
+
+	void ModifyLives(int Value);
 
 protected:
 
 	virtual void InitGameState();
 
-private:
-
 	void RestartGame();
+
+	UPROPERTY(VisibleAnywhere, BluePrintReadOnly, Category = "Game State")
+	int32 CurrentLives;
 	
 };
