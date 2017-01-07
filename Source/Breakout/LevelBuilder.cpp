@@ -17,7 +17,6 @@ ALevelBuilder::ALevelBuilder()
 void ALevelBuilder::BeginPlay()
 {
 	Super::BeginPlay();
-	SpawnLevel(StartLevel);
 }
 
 // Called every frame
@@ -33,6 +32,12 @@ void ALevelBuilder::SpawnLevel(int32 LevelIndex)
 	{
 		UE_LOG(LogTemp, Warning, TEXT("Could not spawn level 'LevelIndex' out of bounds of available levels."));
 		return;
+	}
+
+	// remove any existing bricks
+	for (TActorIterator<ABrick> ActorItr(GetWorld()); ActorItr; ++ActorItr)
+	{
+		ActorItr->Destroy();
 	}
 
 	// parse level data

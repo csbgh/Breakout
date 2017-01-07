@@ -30,6 +30,9 @@ public:
 	UPROPERTY(EditAnywhere, BluePrintReadWrite, Category = "UI")
 	FVector2D ConstrainAspectRatioOffset;
 
+	UFUNCTION(BlueprintImplementableEvent, Category = "Blueprint Events")
+	void OnNewLevel(int32 LevelIndex);
+
 protected:
 
 	virtual void InitGameState();

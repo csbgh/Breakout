@@ -69,6 +69,7 @@ void ABreakoutGameState::NextLevel()
 	if (LevelBuilder != nullptr)
 	{
 		LevelBuilder->SpawnLevel(CurrentLevel);
+		OnNewLevel(CurrentLevel);
 	}
 }
 
@@ -78,5 +79,6 @@ void ABreakoutGameState::RestartGame()
 	CurrentLives = 3;
 	CurrentLevel = 0;
 	LevelBuilder->SpawnLevel(CurrentLevel);
+	OnNewLevel(CurrentLevel);
 }
 
