@@ -32,6 +32,8 @@ public:
 	UFUNCTION()
 	void OnBallRelease();
 
+	void ResetBall(float ReleaseDelayTime);
+
 private:
 
 	UPROPERTY(VisibleAnywhere, BluePrintReadOnly, Category = "Ball", meta = (AllowPrivateAccess = "true"))
@@ -39,7 +41,5 @@ private:
 
 	UPROPERTY(VisibleAnywhere, BluePrintReadOnly, Category = "Ball", meta = (AllowPrivateAccess = "true"))
 	class UBallMovementComponent* Movement;
-
-	void ResetBall(float ReleaseDelayTime);
 
 };

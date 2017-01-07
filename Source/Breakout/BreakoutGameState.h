@@ -17,21 +17,38 @@ public:
 
 	ABreakoutGameState();
 
+	// Called when the game starts or when spawned
+	virtual void BeginPlay() override;
+
+	void ModifyLives(int Value);
+
+	void BrickDestroyed();
+
 	UPROPERTY(VisibleAnywhere, BluePrintReadOnly, Category = "Game State")
 	int32 CurrentScore;
 
 	UPROPERTY(EditAnywhere, BluePrintReadWrite, Category = "UI")
 	FVector2D ConstrainAspectRatioOffset;
 
-	void ModifyLives(int Value);
-
 protected:
 
 	virtual void InitGameState();
 
+	void NextLevel();
 	void RestartGame();
 
 	UPROPERTY(VisibleAnywhere, BluePrintReadOnly, Category = "Game State")
 	int32 CurrentLives;
+
+	UPROPERTY(VisibleAnywhere, BluePrintReadOnly, Category = "Game State")
+	int32 CurrentLevel;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Blueprints")
+	UClass* LevelBuilderBP;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Blueprints")
+	UClass* BallBP;
 	
+	class ALevelBuilder* LevelBuilder;
+	class ABall* Ball;
 };

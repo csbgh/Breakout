@@ -43,9 +43,11 @@ void ABrick::NotifyHit(class UPrimitiveComponent* MyComp, AActor* Other, class U
 		{
 			ABreakoutGameState* BreakoutGameState = (ABreakoutGameState*)GameState;
 			BreakoutGameState->CurrentScore += ScoreValue;
+			BreakoutGameState->BrickDestroyed();
 		}
 	}
 
+	// call blueprint events
 	OnBrickHit();
 	OnBrickDestroyed();
 

@@ -24,12 +24,13 @@ public:
 
 	// Sets default values for this actor's properties
 	ALevelBuilder();
-
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 	
 	// Called every frame
-	virtual void Tick( float DeltaSeconds ) override;
+	virtual void Tick(float DeltaSeconds) override;
+
+	void SpawnLevel(int32 LevelIndex);
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Levels")
 	int32 StartLevel;
@@ -39,9 +40,5 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Bricks")
 	TArray<UClass*> BrickActors;
-	
-private:
-
-	void SpawnLevel(int32 LevelIndex);
 
 };
