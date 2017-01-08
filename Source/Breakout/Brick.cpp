@@ -36,21 +36,23 @@ void ABrick::Tick( float DeltaTime )
 
 void ABrick::NotifyHit(class UPrimitiveComponent* MyComp, AActor* Other, class UPrimitiveComponent* OtherComp, bool bSelfMoved, FVector HitLocation, FVector HitNormal, FVector NormalImpulse, const FHitResult& Hit)
 {
-	if (UWorld* CurWorld = GetWorld())
-	{
-		AGameStateBase* GameState = CurWorld->GetGameState();
-		if (GameState != nullptr)
-		{
-			ABreakoutGameState* BreakoutGameState = (ABreakoutGameState*)GameState;
-			BreakoutGameState->CurrentScore += ScoreValue;
-			BreakoutGameState->BrickDestroyed();
-		}
-	}
-
-	// call blueprint events
+	MaxHealth--;
 	OnBrickHit();
-	OnBrickDestroyed();
 
-	Destroy();
+	if (MaxHealth <= 0)
+	{
+		if (UWorld* CurWorld = GetWorld())
+		{
+			AGameStateBase* GameState = CurWorld->GetGameState();
+			if (GameState != nullptr)
+			{
+				ABreakoutGameState* BreakoutGameState = (ABreakoutGameState*)GameState;
+				BreakoutGameState->CurrentScore += ScoreValue;
+				BreakoutGameState->BrickDestroyed();
+			}
+		}
+		OnBrickDestroyed();
+		Destroy();
+	}
 }
 

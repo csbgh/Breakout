@@ -40,10 +40,10 @@ protected:
 	void NextLevel();
 	void RestartGame();
 
-	UPROPERTY(VisibleAnywhere, BluePrintReadOnly, Category = "Game State")
+	UPROPERTY(EditAnywhere, BluePrintReadOnly, Category = "Game State", meta = (AllowPrivateAccess = "true"))
 	int32 CurrentLives;
 
-	UPROPERTY(VisibleAnywhere, BluePrintReadOnly, Category = "Game State")
+	UPROPERTY(EditAnywhere, BluePrintReadOnly, Category = "Game State", meta = (AllowPrivateAccess = "true"))
 	int32 CurrentLevel;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Blueprints")
