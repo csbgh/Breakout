@@ -88,7 +88,6 @@ void ALevelBuilder::SpawnLevel(int32 LevelIndex)
 		{
 			if (*ColIt != 0)
 			{
-				UE_LOG(LogTemp, Warning, TEXT("CELL %i"), *ColIt);
 				if (UWorld* World = GetWorld())
 				{
 					FActorSpawnParameters SpawnParams;
@@ -98,7 +97,6 @@ void ALevelBuilder::SpawnLevel(int32 LevelIndex)
 			CurPosition.X += BrickWidth*2.0f;
 		}
 		CurPosition.Z -= BrickHeight*2.0f;
-		UE_LOG(LogTemp, Warning, TEXT(","));
 	}
 }
 

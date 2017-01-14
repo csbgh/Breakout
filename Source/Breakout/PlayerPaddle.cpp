@@ -3,6 +3,7 @@
 #include "Breakout.h"
 #include "PaperSpriteComponent.h"
 #include "PlayerPaddle.h"
+#include "BreakoutGameState.h"
 
 // Sets default values
 APlayerPaddle::APlayerPaddle()
@@ -26,6 +27,14 @@ void APlayerPaddle::BeginPlay()
 void APlayerPaddle::Tick( float DeltaTime )
 {
 	Super::Tick( DeltaTime );
+	
+	if (UWorld *World = GetWorld())
+	{
+		ABreakoutGameState* BreakoutState = Cast<ABreakoutGameState>(World->GetGameState());
+
+		if (BreakoutState != nullptr && BreakoutState->GameState != EGameState::VE_Playing)
+			return;
+	}
 
 	// Move Paddle
 	{

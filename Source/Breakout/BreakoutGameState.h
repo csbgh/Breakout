@@ -5,6 +5,13 @@
 #include "GameFramework/GameStateBase.h"
 #include "BreakoutGameState.generated.h"
 
+UENUM(BlueprintType)
+enum class EGameState : uint8
+{
+	VE_Playing 		UMETA(DisplayName = "Playing"),
+	VE_GameOver 	UMETA(DisplayName = "Game Over")
+};
+
 /**
  * 
  */
@@ -27,11 +34,17 @@ public:
 	UPROPERTY(VisibleAnywhere, BluePrintReadOnly, Category = "Game State")
 	int32 CurrentScore;
 
+	UPROPERTY(VisibleAnywhere, BluePrintReadWrite, Category = "Game State")
+	EGameState GameState;
+
 	UPROPERTY(EditAnywhere, BluePrintReadWrite, Category = "UI")
 	FVector2D ConstrainAspectRatioOffset;
 
 	UFUNCTION(BlueprintImplementableEvent, Category = "Blueprint Events")
 	void OnNewLevel(int32 LevelIndex);
+
+	UFUNCTION(BlueprintImplementableEvent, Category = "Blueprint Events")
+	void OnLifeLost();
 
 protected:
 
@@ -39,6 +52,7 @@ protected:
 
 	void NextLevel();
 	void RestartGame();
+	void GameOver();
 
 	UPROPERTY(EditAnywhere, BluePrintReadOnly, Category = "Game State", meta = (AllowPrivateAccess = "true"))
 	int32 CurrentLives;
@@ -51,6 +65,12 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Blueprints")
 	UClass* BallBP;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "UI", meta = (AllowPrivateAccess = "true"))
+	TSubclassOf<class UUserWidget> GameOverWidgetTemplate;
+
+	UPROPERTY()
+	UUserWidget* GameOverWidgetInstance;
 	
 	class ALevelBuilder* LevelBuilder;
 	class ABall* Ball;
